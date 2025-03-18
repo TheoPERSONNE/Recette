@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Recette API",
-    "description": "API pour gérer les recettes",
+    "description": "API pour gérer les recettes et les livres",
     "contact": {
       "name": "Support API",
       "email": "contact@example.com"
@@ -95,7 +95,6 @@
         }
       }
     },
-
     "/deleteRecette/{id}": {
       "delete": {
         "tags": ["Recette"],
@@ -117,107 +116,106 @@
           }
         }
       }
-    }
-  },
-  "/getLivre": {
-    "get": {
-      "tags": ["Livre"],
-      "summary": "Récupérer toutes les Livres",
-      "responses": {
-        "200": {
-          "description": "Liste des Livre récupérée avec succès",
-          "schema": {
-            "type": "array",
-            "items": {
+    },
+    "/getLivre": {
+      "get": {
+        "tags": ["Livre"],
+        "summary": "Récupérer tous les livres",
+        "responses": {
+          "200": {
+            "description": "Liste des livres récupérée avec succès",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Livre"
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/definitions/errorResponse.500"
+          }
+        }
+      }
+    },
+    "/postLivre": {
+      "post": {
+        "tags": ["Livre"],
+        "summary": "Ajouter un nouveau livre",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
               "$ref": "#/definitions/Livre"
             }
           }
-        },
-        "500": {
-          "$ref": "#/definitions/errorResponse.500"
+        ],
+        "responses": {
+          "201": {
+            "description": "Livre ajouté avec succès",
+            "schema": {
+              "$ref": "#/definitions/Livre"
+            }
+          },
+          "400": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
         }
       }
-    }
-  },
-  "/postLivre": {
-    "post": {
-      "tags": ["Livre"],
-      "summary": "Ajouter une nouvelle Livre",
-      "parameters": [
-        {
-          "in": "body",
-          "name": "body",
-          "required": true,
-          "schema": {
-            "$ref": "#/definitions/Livre"
+    },
+    "/putLivre/{id}": {
+      "put": {
+        "tags": ["Livre"],
+        "summary": "Mettre à jour un livre",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Livre"
+            }
           }
-        }
-      ],
-      "responses": {
-        "201": {
-          "description": "Livre ajoutée avec succès",
-          "schema": {
-            "$ref": "#/definitions/Livre"
+        ],
+        "responses": {
+          "200": {
+            "description": "Livre mis à jour avec succès",
+            "schema": {
+              "$ref": "#/definitions/Livre"
+            }
+          },
+          "404": {
+            "$ref": "#/definitions/errorResponse.404"
           }
-        },
-        "400": {
-          "$ref": "#/definitions/errorResponse.400"
         }
       }
-    }
-  },
-  "/putLivre/{id}": {
-    "put": {
-      "tags": ["Livre"],
-      "summary": "Mettre à jour un Livre",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "in": "body",
-          "name": "body",
-          "required": true,
-          "schema": {
-            "$ref": "#/definitions/Livre"
+    },
+    "/deleteLivre/{id}": {
+      "delete": {
+        "tags": ["Livre"],
+        "summary": "Supprimer un livre",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Livre mise à jour avec succès",
-          "schema": {
-            "$ref": "#/definitions/Livre"
+        ],
+        "responses": {
+          "200": {
+            "description": "Livre supprimé avec succès"
+          },
+          "404": {
+            "$ref": "#/definitions/errorResponse.404"
           }
-        },
-        "404": {
-          "$ref": "#/definitions/errorResponse.404"
-        }
-      }
-    }
-  },
-  
-  "/deleteLivre/{id}": {
-    "delete": {
-      "tags": ["Livre"],
-      "summary": "Supprimer une recette",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Recette supprimée avec succès"
-        },
-        "404": {
-          "$ref": "#/definitions/errorResponse.404"
         }
       }
     }
@@ -234,9 +232,9 @@
     "Livre": {
       "type": "object",
       "properties": {
-        "id": { "type": "string", "example": "12345" },
-        "Titre": { "type": "string", "example": "Gateau" },
-        "Description": { "type": "string", "example": "Ceci est un livre de gateau" }
+        "id": { "type": "string", "example": "67890" },
+        "Titre": { "type": "string", "example": "Livre de recettes" },
+        "Description": { "type": "string", "example": "Un livre contenant diverses recettes de gâteaux." }
       }
     },
     "errorResponse.400": {
@@ -250,7 +248,7 @@
       "type": "object",
       "properties": {
         "code": { "type": "number", "example": 404 },
-        "message": { "type": "string", "example": "Recette non trouvée." }
+        "message": { "type": "string", "example": "Ressource non trouvée." }
       }
     },
     "errorResponse.500": {

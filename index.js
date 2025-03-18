@@ -23,7 +23,7 @@ const recetteSchema = new mongoose.Schema({
 
 });
 console.log(recetteSchema);
-const Recette = mongoose.model('recette', recetteSchema, 'projetexpress');
+const Recette = mongoose.model('recette', recetteSchema, 'recette');
 
 const livreSchema = new mongoose.Schema({
   
@@ -31,7 +31,7 @@ const livreSchema = new mongoose.Schema({
   Description: { type: String, required: true }
   
 });
-const Livre = mongoose.model('livre', livreSchema, 'projetexpress');
+const Livre = mongoose.model('livre', livreSchema, 'livre');
 console.log(recetteSchema);
 
 app.use("/api-docs", swaggerUIPath.serve, swaggerUIPath.setup(swaggerjsonFilePath));
@@ -98,8 +98,9 @@ try {
     Titre: req.body.Titre,
     Description: req.body.Description
   });
-  await nouveauLivre.save();
-  res.status(201).json({ message: "Recette ajoutée avec succès", recette: nouveauLivre });
+  await nouvelleLivre.save();
+  res.status(201).json({ message: "Livre ajouté avec succès", livre: nouvelleLivre });
+  
 } catch (error) {
   res.status(500).json({ error: error.message });
 }
