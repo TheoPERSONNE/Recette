@@ -2,124 +2,262 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Todo Apis",
-    "description": "API for Managing todo calls",
+    "title": "Recette API",
+    "description": "API pour gérer les recettes",
     "contact": {
-      "name": "API Support",
-      "email": "tiwariankit496@gmail.com"
+      "name": "Support API",
+      "email": "contact@example.com"
     }
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "tags": [
-    {
-      "name": "TODO CRUD",
-      "description": "TODO related apis"
-    },
-    {
-      "name": "Todo",
-      "description": "Todo App"
-    }
-  ],
-  "schemes": [
-    "http"
-  ],
-  "securityDefinitions": {},
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
     "/getRecette": {
       "get": {
-        "description": "",
+        "tags": ["Recette"],
+        "summary": "Récupérer toutes les recettes",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Liste des recettes récupérée avec succès",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Recette"
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/definitions/errorResponse.500"
+          }
+        }
+      }
+    },
+    "/postRecette": {
+      "post": {
+        "tags": ["Recette"],
+        "summary": "Ajouter une nouvelle recette",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Recette"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Recette ajoutée avec succès",
+            "schema": {
+              "$ref": "#/definitions/Recette"
+            }
+          },
+          "400": {
+            "$ref": "#/definitions/errorResponse.400"
+          }
+        }
+      }
+    },
+    "/putRecette/{id}": {
+      "put": {
+        "tags": ["Recette"],
+        "summary": "Mettre à jour une recette",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Recette"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recette mise à jour avec succès",
+            "schema": {
+              "$ref": "#/definitions/Recette"
+            }
+          },
+          "404": {
+            "$ref": "#/definitions/errorResponse.404"
+          }
+        }
+      }
+    },
+
+    "/deleteRecette/{id}": {
+      "delete": {
+        "tags": ["Recette"],
+        "summary": "Supprimer une recette",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recette supprimée avec succès"
+          },
+          "404": {
+            "$ref": "#/definitions/errorResponse.404"
           }
         }
       }
     }
   },
+  "/getLivre": {
+    "get": {
+      "tags": ["Livre"],
+      "summary": "Récupérer toutes les Livres",
+      "responses": {
+        "200": {
+          "description": "Liste des Livre récupérée avec succès",
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Livre"
+            }
+          }
+        },
+        "500": {
+          "$ref": "#/definitions/errorResponse.500"
+        }
+      }
+    }
+  },
+  "/postLivre": {
+    "post": {
+      "tags": ["Livre"],
+      "summary": "Ajouter une nouvelle Livre",
+      "parameters": [
+        {
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/Livre"
+          }
+        }
+      ],
+      "responses": {
+        "201": {
+          "description": "Livre ajoutée avec succès",
+          "schema": {
+            "$ref": "#/definitions/Livre"
+          }
+        },
+        "400": {
+          "$ref": "#/definitions/errorResponse.400"
+        }
+      }
+    }
+  },
+  "/putLivre/{id}": {
+    "put": {
+      "tags": ["Livre"],
+      "summary": "Mettre à jour un Livre",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "in": "body",
+          "name": "body",
+          "required": true,
+          "schema": {
+            "$ref": "#/definitions/Livre"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Livre mise à jour avec succès",
+          "schema": {
+            "$ref": "#/definitions/Livre"
+          }
+        },
+        "404": {
+          "$ref": "#/definitions/errorResponse.404"
+        }
+      }
+    }
+  },
+  
+  "/deleteLivre/{id}": {
+    "delete": {
+      "tags": ["Livre"],
+      "summary": "Supprimer une recette",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Recette supprimée avec succès"
+        },
+        "404": {
+          "$ref": "#/definitions/errorResponse.404"
+        }
+      }
+    }
+  },
   "definitions": {
-    "todoResponse": {
+    "Recette": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "number",
-          "example": 200
-        },
-        "message": {
-          "type": "string",
-          "example": "Success"
-        }
+        "id": { "type": "string", "example": "12345" },
+        "Titre": { "type": "string", "example": "Tarte aux pommes" },
+        "Recette": { "type": "string", "example": "Mélangez les ingrédients et faites cuire." }
+      }
+    },
+    "Livre": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "example": "12345" },
+        "Titre": { "type": "string", "example": "Gateau" },
+        "Description": { "type": "string", "example": "Ceci est un livre de gateau" }
       }
     },
     "errorResponse.400": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "number",
-          "example": 400
-        },
-        "message": {
-          "type": "string",
-          "example": "The request was malformed or invalid. Please check the request parameters."
-        }
-      }
-    },
-    "errorResponse.401": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "number",
-          "example": 401
-        },
-        "message": {
-          "type": "string",
-          "example": "Authentication failed or user lacks proper authorization."
-        }
-      }
-    },
-    "errorResponse.403": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "number",
-          "example": 403
-        },
-        "message": {
-          "type": "string",
-          "example": "You do not have permission to access this resource."
-        }
+        "code": { "type": "number", "example": 400 },
+        "message": { "type": "string", "example": "Requête invalide." }
       }
     },
     "errorResponse.404": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "string",
-          "example": "404"
-        },
-        "message": {
-          "type": "string",
-          "example": "The requested resource could not be found on the server."
-        }
+        "code": { "type": "number", "example": 404 },
+        "message": { "type": "string", "example": "Recette non trouvée." }
       }
     },
     "errorResponse.500": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "number",
-          "example": 500
-        },
-        "message": {
-          "type": "string",
-          "example": "An unexpected error occurred on the server. Please try again later."
-        }
+        "code": { "type": "number", "example": 500 },
+        "message": { "type": "string", "example": "Erreur serveur." }
       }
     }
   }
