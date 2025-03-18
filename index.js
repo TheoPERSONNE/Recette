@@ -16,10 +16,20 @@ mongoose.connect('mongodb+srv://personnetheo:Lionceaux999@cluster0.rgpyp.mongodb
   .then(() => console.log('✅ Connecté à MongoDB'))
   .catch(err => console.log('❌ Erreur de connexion MongoDB:', err));
 
+// const recetteSchemaLivre = new mongoose.Schema({
+
+//   Titre: { type: String, required: true },
+//   Recette: { type: String, required: true },
+//   livre: { type: mongoose.Schema.Types.ObjectId, ref: 'Livre', required: true }
+
+// });
+// const RecetteLivre = mongoose.model('recetteLivre', recetteSchema, 'recetteLivre');
+
 const recetteSchema = new mongoose.Schema({
 
   Titre: { type: String, required: true },
-  Recette: { type: String, required: true }
+  Recette: { type: String, required: true },
+ 
 
 });
 console.log(recetteSchema);
@@ -45,6 +55,15 @@ app.get('/getRecette', async (req, res) => {
     }
   });
 
+  // app.get("/getRecette:id", async (req, res) => {
+  //   try {
+  //       const recette = await Livre.findById(Livre)
+
+  //   }
+  //   catch {
+
+  //   }
+  // })
 
 app.post('/postRecette', async (req, res) => {
   try {
